@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: service-a
+
+server:
+  port: 8081
+
+eureka:
+  client:
+    enabled: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+  endpoint:
+    health:
+      show-details: always
+    prometheus:
+      enabled: true
+  metrics:
+    enable:
+      jvm: true
+      process: true
+      logback: true
+    export:
+      prometheus:
+        enabled: true
+    tags:
+      application: service-a
