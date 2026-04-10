@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Cloud Demo - Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 30px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            text-decoration: none;
+            color: black;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .service-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .service-title {
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .service-description {
+            color: #666;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .service-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .service-link:hover {
+            transform: scale(1.05);
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-top: 10px;
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status.checking {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 50px;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Spring Cloud Demo</h1>
+            <p>Arquitetura de Microserviços com Doce Store</p>
+        </header>
+
+        <div class="services-grid">
+            <!-- Doce Store -->
+            <div class="service-card">
+                <div class="service-icon">🍰</div>
+                <div class="service-title">Doce Store</div>
+                <div class="service-description">
+                    Loja moderna e interativa de doces. Navegue pelo catálogo bonito com 19 produtos diferentes!
+                </div>
+                <a href="http://localhost:8083" class="service-link">Abrir Loja →</a>
+                <div class="status" id="status-docestore">⏳ Verificando...</div>
+            </div>
+
+            <!-- Eureka Server -->
+            <div class="service-card">
+                <div class="service-icon">🔍</div>
+                <div class="service-title">Eureka Server</div>
+                <div class="service-description">
+                    Service Discovery. Visualize todos os serviços registrados na arquitetura.
+                </div>
+                <a href="http://localhost:8761" class="service-link">Acessar Eureka →</a>
+                <div class="status" id="status-eureka">⏳ Verificando...</div>
+            </div>
+
+            <!-- Service A -->
+            <div class="service-card">
+                <div class="service-icon">📡</div>
+                <div class="service-title">Service A</div>
+                <div class="service-description">
+                    Teste o endpoint /api/hello para ver a resposta do serviço A.
+                </div>
+                <a href="http://localhost:8081/api/hello" class="service-link">Chamar API →</a>
+                <div class="status" id="status-servicea">⏳ Verificando...</div>
+            </div>
+
+            <!-- Service B -->
+            <div class="service-card">
+                <div class="service-icon">📡</div>
+                <div class="service-title">Service B</div>
+                <div class="service-description">
+                    Service B comunica com Service A através do Eureka. Teste a chamada inter-serviços.
+                </div>
+                <a href="http://localhost:8082/api/call-service-a" class="service-link">Chamar Service A →</a>
+                <div class="status" id="status-serviceb">⏳ Verificando...</div>
+            </div>
+
+            <!-- Prometheus -->
+            <div class="service-card">
+                <div class="service-icon">📊</div>
+                <div class="service-title">Prometheus</div>
+                <div class="service-description">
+                    Sistema de coleta de métricas. Visualize dados brutos dos serviços em tempo real.
+                </div>
+                <a href="http://localhost:9090" class="service-link">Abrir Prometheus →</a>
+                <div class="status" id="status-prometheus">⏳ Verificando...</div>
+            </div>
+
+            <!-- Grafana -->
+            <div class="service-card">
+                <div class="service-icon">📈</div>
+                <div class="service-title">Grafana</div>
+                <div class="service-description">
+                    Dashboard visual com gráficos e métricas. Login: admin / Password: admin
+                </div>
+                <a href="http://localhost:3000" class="service-link">Abrir Grafana →</a>
+                <div class="status" id="status-grafana">⏳ Verificando...</div>
+            </div>
+        </div>
+
+        <footer>
+            <p>💡 Todos os serviços rodando em Docker. Use <code>docker-compose ps</code> para ver o status.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Verificar status dos serviços
+        async function checkService(name, port, endpoint = '/actuator/health') {
+            try {
+                const response = await fetch(`http://localhost:${port}${endpoint}`, {
+                    method: 'GET',
+                    mode: 'no-cors'
+                });
+                updateStatus(name, true);
+            } catch (error) {
+                updateStatus(name, false);
+            }
+        }
+
+        function updateStatus(name, online) {
+            const statusEl = document.getElementById(`status-${name}`);
+            if (online) {
+                statusEl.textContent = '✅ Online';
+                statusEl.className = 'status';
+            } else {
+                statusEl.textContent = '❌ Offline';
+                statusEl.className = 'status';
+            }
+        }
+
+        // Verificar tudo
+        window.addEventListener('load', () => {
+            checkService('docestore', 8083);
+            checkService('eureka', 8761);
+            checkService('servicea', 8081);
+            checkService('serviceb', 8082);
+            checkService('prometheus', 9090, '/graph');
+            checkService('grafana', 3000, '/api/health');
+        });
+
+        // Verificar a cada 10 segundos
+        setInterval(() => {
+            checkService('docestore', 8083);
+            checkService('eureka', 8761);
+            checkService('servicea', 8081);
+            checkService('serviceb', 8082);
+            checkService('prometheus', 9090, '/graph');
+            checkService('grafana', 3000, '/api/health');
+        }, 10000);
+    </script>
+</body>
+</html>
